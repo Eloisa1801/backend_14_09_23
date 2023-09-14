@@ -14,11 +14,11 @@ app.get("/", (req, res) => {
 
 app.get("/users", verifyJWT, (req, res, next) => {
   console.log("show users");
-  res.json([{ id: 1, nome: "Bruno" }]);
+  res.json([{ id: 1, nome: "Eloisa" }]);
 });
 
 app.post("/login", (req, res, next) => {
-  if (req.body.user === "Bruno" && req.body.pwd === "123") {
+  if (req.body.user === "Eloisa" && req.body.pwd === "123") {
     //auth ok
     const id = 1; //esse id viria do banco de dados
     const token = jwt.sign({ id }, process.env.SECRET, {
