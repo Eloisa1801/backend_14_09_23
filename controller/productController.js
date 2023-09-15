@@ -49,3 +49,7 @@ app.post("/api", (req, res) => {
 
   return res.json(products);
 });
+
+axios.get("https://dummyjson.com/products").then((response) => {
+  res.json(response.data); //****** */
+});
