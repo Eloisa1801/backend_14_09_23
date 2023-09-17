@@ -1,3 +1,4 @@
+
 const axios = require("axios");
 const { PrismaClient } = require("@prisma/client");
 
@@ -29,3 +30,25 @@ async function fetchAndSaveData() {
 }
 
 fetchAndSaveData();
+
+
+//----------------------------------------------
+
+const { PrismaClient } = require("@prisma/client");
+
+const prisma = new PrismaClient();
+
+async function fetchProductsFromDatabase() {
+  try {
+    // Consultar os produtos do banco de dados Prisma
+    const products = await prisma.product.findMany();
+
+    return products;
+  } catch (error) {
+    console.error("Erro ao buscar produtos do banco de dados Prisma:", error);
+    throw error;
+  } finally {
+    await prisma.$disconnect(); // Fechar a conexão com o banco de dados quando terminar
+  }
+}
+
