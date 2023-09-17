@@ -1,43 +1,31 @@
-//extensao do chrome JSON FORMATTER
+const axios = require("axios");
+const { PrismaClient } = require("@prisma/client");
 
-//import
-const http = require("http");
+const prisma = new PrismaClient();
 
-//array com 3 objetos
-const products = [
-  {
-    id: 1,
-    name: "Project 1",
-  },
-  {
-    id: 2,
-    name: "Project 2",
-  },
-  {
-    id: 3,
-    name: "Project 3",
-  },
-];
+async function fetchAndSaveData() {
+  try {
+    const response = await axios.get("https://dummyjson.com/products");
+    const externalData = response.data;
 
-//criacao do servidor
-const server = http.createServer((req, res) => {
-  res.writeHead(200, { "Content-Type": "aplication/jason" });
+    for (const item of externalData) {
+      const { title, description, price } = item;
 
-  //Resquisao tipo GET
-  if (req.url === "/products") {
-    res.end(
-      JSON.stringify({
-        data: products,
-      })
-    );
+      await prisma.product.create({
+        data: {
+          title,
+          description,
+          price,
+        },
+      });
+    }
+
+    console.log("Dados da API foram salvos com sucesso no banco de dados Prisma.");
+  } catch (error) {
+    console.error("Erro ao buscar dados da API e salvar no banco de dados Prisma:", error);
+  } finally {
+    await prisma.$disconnect(); // Fechar a conexão com o banco de dados quando terminar
   }
+}
 
-  //res.end(JSON.stringify({
-  //    data: 'Meu primeiro backend Node'
-  //}))
-});
-
-//porta do servidor
-server.listen(8000, () => {
-  console.log("Server is running on port 8000");
-});
+fetchAndSaveData();
