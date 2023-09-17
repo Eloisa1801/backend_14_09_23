@@ -1,3 +1,7 @@
+axios.get("https://dummyjson.com/products").then((response) => {
+  return response.data;
+});
+
 //products
 exports.getAll = (req, res) => {
   //buscar em bd (repositorio)
@@ -50,6 +54,3 @@ app.post("/api", (req, res) => {
   return res.json(products);
 });
 
-axios.get("https://dummyjson.com/products").then((response) => {
-  res.json(response.data); //****** */
-});
